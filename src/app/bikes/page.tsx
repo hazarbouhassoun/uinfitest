@@ -116,7 +116,7 @@ const Bikes: React.FC = () => {
       <Grid container spacing={2}>
           <Grid size={10}>
             <Grid size={12} sx={{py: 1}}>
-              <TextField value={search} fullWidth id="outlined-basic1" label="Partial Case Title" variant="outlined"
+              <TextField value={search} size='small' fullWidth id="outlined-basic1" label="Partial Case Title" variant="outlined"
               onChange={(e)=> setSearch(e.target.value)} />
             </Grid>
             <Grid size={12} sx={{py: 1,display: 'flex', justifyContent: 'space-between'}}>
@@ -126,7 +126,9 @@ const Bikes: React.FC = () => {
                 value={startDate}
                 sx={{width: '48%'}}
                 onChange={(date) => setStartDate(date)}
-                renderInput={(params) => <TextField {...params} fullWidth size="small" />}
+                slotProps={{
+                  textField: { size: 'small' } 
+                }}
               />
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -135,7 +137,9 @@ const Bikes: React.FC = () => {
                   value={endDate}
                   sx={{ width: '48%'}}
                   onChange={(date) => setEndDate(date)}
-                  renderInput={(params) => <TextField {...params} fullWidth size="small" />}
+                  slotProps={{
+                    textField: { size: 'small' } 
+                  }}
                 />
               </LocalizationProvider>
             </Grid>
