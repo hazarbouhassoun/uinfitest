@@ -49,7 +49,6 @@ const Bikes: React.FC = () => {
         const responseData: any = await response.json();
         const data: Bike[] = responseData.bikes;
         setData(data);
-        console.log(data)
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -60,15 +59,23 @@ const Bikes: React.FC = () => {
     const fetchCountData = async () => {
       setCountLoading(true); // Start loading
       try {
-        const response = await fetch('https://bikeindex.org:443/api/v3/search/count?location=Munich&distance=10&stolenness=stolen');
+        const query = new URLSearchParams({
+          distance: '10',
+          stolenness: 'proximity',
+          location: 'Munich',
+          query: search,
+          startDate: startDate ? startDate.toISOString() : '',
+          endDate: endDate ? endDate.toISOString() : '',
+        }).toString();
+
+        const response = await fetch(`https://bikeindex.org:443/api/v3/search/count?${query}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         
         const countData: any = await response.json();
         setCountData(countData);
-        setTotalPages(Math.ceil(Number(countData.stolen) / 10)); 
-        console.log(countData)
+        setTotalPages(Math.ceil(Number(countData.stolen) / 10));
       } catch (err: any) {
         setCountError(err.message);
       } finally {
@@ -78,7 +85,7 @@ const Bikes: React.FC = () => {
 
     useEffect(() => {
       fetchData();
-      // fetchCountData();
+      fetchCountData();
     }, [page]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -139,7 +146,7 @@ const Bikes: React.FC = () => {
           </Button>
           </Grid>
         </Grid>
-        {loading ? (
+        {loading || countLoading ? (
           <Container sx={{display: 'flex', justifyContent: 'center', height: '50vh'}}>
             <CircularProgress sx={{margin: 'auto'}} />
           </Container>
@@ -147,11 +154,11 @@ const Bikes: React.FC = () => {
         <Box>
           {countLoading ? (
             <Typography variant="h6" gutterBottom>
-              Stolen Bikes in Munchin : no result
+              Stolen Bikes in Munich : wait...
             </Typography>
           ): (
             <Typography variant="h6" gutterBottom>
-              Stolen Bikes in Munchin :  {countData?.stolen}
+              Stolen Bikes in Munich :  {countData?.stolen}
             </Typography>
           )}
           <Card items={data}/>

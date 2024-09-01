@@ -15,6 +15,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Avatar } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/LogoutOutlined';
+import { useRouter } from 'next/navigation';
+
 
 interface Props {
   /**
@@ -29,6 +32,11 @@ const drawerWidth = 240;
 export default function DrawerAppBar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    router.push('/login');
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -72,6 +80,7 @@ export default function DrawerAppBar(props: Props) {
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
             <Avatar src="https://www.google.com/imgres?q=broken%20profile%20image%20link&imgurl=https%3A%2F%2Fapi-private.atlassian.com%2Fusers%2F8d594cb13c662d6fbe738434174f4199%2Favatar&imgrefurl=https%3A%2F%2Fcommunity.atlassian.com%2Ft5%2FMarketplace-Apps-Integrations%2FrenderUser-creates-broken-link%2Fqaq-p%2F670831&docid=KM1BZRybHCBoEM&tbnid=rwxrJ41h22qTIM&vet=12ahUKEwjwv_SEw6CIAxVChv0HHX4GBG4QM3oECEEQAA..i&w=256&h=256&hcb=2&itg=1&ved=2ahUKEwjwv_SEw6CIAxVChv0HHX4GBG4QM3oECEEQAA" />
             <Typography variant="button" sx={{margin: 'auto', mx: 1}}>Police Officer</Typography>
+            <LogoutIcon onClick={handleSignOut} sx={{width: '25px', height: '25px', textAlign: 'center', justifyContent: 'center',color: 'secondary', margin: 'auto', mx: 1}}  />
           </Box>
         </Toolbar>
       </AppBar>
