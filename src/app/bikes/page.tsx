@@ -23,6 +23,7 @@ const Bikes: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(10); // Adjust based on your 
   // bikes count data
   const [countData, setCountData] = useState<Count[] | null>(null);
+  const [countStolenData, setCountStolenData] = useState<number[] | null>(null);
   const [countLoading, setCountLoading] = useState<boolean>(true);
   const [countError, setCountError] = useState<string | null>(null);
 
@@ -75,6 +76,7 @@ const Bikes: React.FC = () => {
         
         const countData: any = await response.json();
         setCountData(countData);
+        setCountStolenData(countData.stolen);
         setTotalPages(Math.ceil(Number(countData.stolen) / 10));
       } catch (err: any) {
         setCountError(err.message);
@@ -162,7 +164,7 @@ const Bikes: React.FC = () => {
             </Typography>
           ): (
             <Typography variant="h6" gutterBottom>
-              Stolen Bikes in Munich :  {countData?.stolen}
+              Stolen Bikes in Munich :  {countStolenData}
             </Typography>
           )}
           <Card items={data}/>
